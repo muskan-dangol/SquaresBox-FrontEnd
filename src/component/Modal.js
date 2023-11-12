@@ -10,10 +10,10 @@ function Modal({ onClose, children, addButton }) {
       ></div>
 
       {/* A modal-container */}
-      <div className="absolute inset-60 p-10 bg-white">
+      <div className="absolute inset-20 p-10 bg-white">
         <div className="flex flex-col justify-between h-full">
           {children}
-          <div className="flex justify-end">{addButton}</div>
+          <div onClick={onClose} className="flex justify-end">{addButton}</div>
         </div>
       </div>
     </div>,
