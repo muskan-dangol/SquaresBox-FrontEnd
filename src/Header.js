@@ -10,7 +10,6 @@ function Header({ onAdd }) {
   const handleClick = () => {
     setShowColorModal(true);
   };
-  
 
   const color = (currentColor) => {
     setSelectedColor(currentColor);

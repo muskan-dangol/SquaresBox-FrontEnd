@@ -1,7 +1,10 @@
+// App.js
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+import ColorContainer from "./pages/ColorContainer";
+import BoxDetail from "./pages/BoxDetail";
 import Header from "./Header";
-import Square from "./component/Square";
-import styled from "styled-components";
 
 const initialColor = [
   { id: 1, name: "red" },
@@ -11,7 +14,7 @@ const initialColor = [
   { id: 5, name: "gray" },
 ];
 
-function App() {
+const App = () => {
   const [colors, setColors] = useState(initialColor);
 
   const addColor = (color) => {
@@ -24,49 +27,39 @@ function App() {
 
   const handleDeleteBox = (id) => {
     const filteredColors = colors.filter((color) => {
-      return color.id !== id;
+      return String(color.id) !== String(id);
     });
     setColors(filteredColors);
   };
 
+  const getColorById = (id) => {
+    return colors.find((each) => String(each.id) === String(id));
+  };
+
   return (
-    <Container>
-      <Header
-        onAdd={addColor}
-        // onColorSelection={(color) => {
-        //   addColor(color);
-        // }}
-      />
-      <ColorList>
-        {colors.map((color) => {
-          return (
-            <div key={color.id} className="box">
-              <Square
-                id={color.id}
-                color={color.name}
+    <div>
+      <Header onAdd={addColor} />
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ColorContainer colors={colors} onDelete={handleDeleteBox} />
+            }
+          />
+          <Route
+            path="/color/:id"
+            element={
+              <BoxDetail
                 onDelete={handleDeleteBox}
+                getColorById={getColorById}
               />
-            </div>
-          );
-        })}
-      </ColorList>
-    </Container>
+            }
+          />
+        </Routes>
+      </Router>
+    </div>
   );
-}
+};
+
 export default App;
-
-const Container = styled.div`
-  height: 100vh;
-`;
-
-const ColorList = styled("div")`
-  display: flex;
-  align-items: center;
-  height: 50vh;
-  flex-wrap: wrap;
-
-  .box {
-    width: 30%;
-    margin: 16px;
-  }
-`;
